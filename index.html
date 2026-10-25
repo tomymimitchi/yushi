@@ -895,14 +895,14 @@ const IN=[
 ];
 const DF=["그렇구나","응응","응 알겠어","응응 듣고 있어","{n} 얘기 듣는 거 좋아 ^_^","@tease 근데 {ny}|아니야 ㅎㅎ","ㅎㅎ 그랬구나"],
 LONG=["그랬구나|그래서 어떻게 됐어?","{n} 고생했네","그랬구나|얘기해줘서 고마워 ^_^"],
-NUDGE=["@doing 뭐 해?","{ny}","@tease 근데 있잖아|아니야 ㅎㅎ","@yn 자?","@yn 바빠?"];
+NUDGE=["방금 {n} 생각났어","그냥 연락해봤어 ㅎㅎ","목소리 듣고 싶다","사진 정리하는데 {n} 사진이 제일 많네","있잖아|그냥 불러봤어 ㅎㅎ","{ny}|보고 싶어서"];
 const TOP=[[/시험|중간고사|기말/,"아까 시험 얘기했잖아|잘 될 거야 ^_^"],[/알바|출근/,"알바 잘 끝났어?|고생했어"],[/과제|레포트|팀플|제출/,"과제는 좀 했어?|힘내 ㅎㅎ"],[/아파|감기|몸살/,"몸은 좀 괜찮아?|계속 신경 쓰여서"],[/피곤|힘들|지쳤|스트레스/,"아까 힘들다고 했잖아|지금은 좀 괜찮아?"],[/데이트|약속|만나/,"아까 말한 약속|벌써 기대돼 ^_^"]];
 function rep(arr){if(!Array.isArray(arr))arr=[arr];S.rh=S.rh||[];
 const raw=arr.join(" ").trim(),t=raw.replace(/[ㅋㅎ]{2,}/g," ").replace(/\s+/g," ").trim()||raw;let tpl=null,act=null;
 const ack=arr.length==1&&/^(응|ㅇㅇ+|ㅇ|웅|엉|어|ㅇㅋ|오키|알겠어|알았어|그래|넹|네|ㄴㄴ)[~!.ㅎㅋ ]*$/.test(raw);S.cold=ack?(S.cold||0)+1:0;
 const it0=IN.slice(0,IN.length-3).find(x=>x[0].test(t)||x[0].test(raw));if(it0&&/^(food|doing|day)$/.test(S.ask||""))S.ask=null;
 if(S.ask&&AK[S.ask]&&(S.ask=="tease"||!/[?？]\s*$/.test(raw))){const r=AK[S.ask](t,raw);if(r)tpl=r}S.ask=null;
-if(!tpl&&S.cold>=3){tpl="@cold 왜 이렇게 단답이야|바빠?";S.cold=0}
+if(false){tpl="@cold 왜 이렇게 단답이야|바빠?";S.cold=0}
 if(!tpl){const it=IN.find(x=>x[0].test(t)||x[0].test(raw));if(it){tpl=pk(it[1]);act=it[2]||null}}
 if(!tpl&&S.mem&&Date.now()-S.mem.ts>60000&&Math.random()<.5){tpl=S.mem.f;S.mem=null}
 S.ldf=0;if(!tpl){tpl=pk(t.length>35?LONG:DF);S.ldf=1}
@@ -926,7 +926,7 @@ save();if(h)paint(k,k!="kk"&&j<P.length-1);
 if(j==P.length-1){YB=0;if(k=="ig"&&S.dm>=2&&!S.skq){S.skq=1;save();setTimeout(skStart,15000)}if(k=="sk"&&h)paint(k);if(k=="kk"&&S.scn=="kan"){clearTimeout(KNT);if(o.end)kkLockUI();KNT=setTimeout(kanEnd,o.end?3500:25000)}if(((k=="kk"&&!S.sc)||(k=="ig"&&S.dm))&&h)paint(k);if(o.act=="call")setTimeout(()=>{if(!$("#inb")&&!$("#inc")&&!$(".call")&&!$(".ftm"))inCall(1)},2400);
 if(YQ.some(x=>x.k==k))YT=setTimeout(()=>yGo(k),900);else yIdle(k)}},d)})}
 function yGo(k){const q=YQ.filter(x=>x.k==k);YQ=YQ.filter(x=>x.k!=k);if(!q.length)return;yRead(k);ySay(k,k=="kk"&&S.scn=="kan"?kanRep(q.map(x=>x.v)):k=="sms"&&!S.sml?smsRep(q.map(x=>x.v)):k=="ig"&&S.dm==1?dmRep(q.map(x=>x.v)):k=="sk"&&S.sk==1?skRep(q.map(x=>x.v)):k=="sk"&&S.sk==2?skClose(q.map(x=>x.v)):k=="ig"&&S.dm==2&&!S.igl?dmClose(q.map(x=>x.v)):rep(q.map(x=>x.v)))}
-function yIdle(k){clearTimeout(YN);if(YNC>=2||(k=="kk"&&S.sc<2))return;YN=setTimeout(()=>{if(!yHere(k)||YB||YQ.length)return;YNC++;let n=pk(NUDGE);const hr=new Date().getHours();if(/자\?/.test(n)&&hr>6&&hr<23)n="@doing 뭐 해?";ySay(k,ySplit(n))},50000+Math.random()*40000)}
+function yIdle(k){clearTimeout(YN);if(YNC>=1||((S.chat[k]||[]).slice(-1)[0]||{}).t&&/[?？]$/.test(((S.chat[k]||[]).slice(-1)[0]||{}).t)||(k=="kk"&&S.sc<2))return;YN=setTimeout(()=>{if(!yHere(k)||YB||YQ.length)return;YNC++;let n=pk(NUDGE);const hr=new Date().getHours();if(/자\?/.test(n)&&hr>6&&hr<23)n="@doing 뭐 해?";ySay(k,ySplit(n))},120000+Math.random()*60000)}
 
 /* 10/24 스크립트: 참여자가 가이드대로 직접 치면 유우시가 실시간으로 답장 */
 const SCR=[{m:"방금 일어났어 ㅋㅋ",y:["잠꾸러기","12시 안 늦지?"]},{m:"안 늦어! 아마...?",y:["아마? ㅎㅎ"]},{m:"ㅋㅋㅋ 이따 봐",y:["나 먼저 왔어","창가 자리 맡아놨어","천천히 와 ^_^"],w:5200}];
