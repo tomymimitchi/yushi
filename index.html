@@ -840,6 +840,15 @@ yn:t=>YES.test(t)?pk(["ㅎㅎ 좋아","좋아|이따 보자","약속한 거다 �
 };
 const LV=["나도 사랑해","나도 사랑해 ㅎㅎ|많이","갑자기?|나도 사랑해","나도|{n} 사랑해",YJP&&"나도 사랑해|다이스키 ㅎㅎ"];
 const IN=[
+[/(달래\s?줘|달래줘|화\s?풀어|안\s?풀|안풀|풀어\s?줘)/,[()=>yApp()]],
+[/(외로|쓸쓸)/,["나 있잖아 ㅎㅎ|이따 바로 갈게","외로워하지 마|내가 연락 자주 할게"]],
+[/(무서워|무섭)/,["내가 옆에 있잖아","괜찮아|전화할까?"]],
+[/(행복해|행복하다|기분\s?좋)/,["나도 ㅎㅎ|{n랑} 있으면 그래","{n} 기분 좋으면 나도 좋아"]],
+[/(나\s?왜\s?좋|내가\s?왜\s?좋|어디가\s?좋)/,["그냥 다 ㅎㅎ","웃는 거|말투|다 좋아"]],
+[/(나\s?없으면|헤어지면|내가\s?없)/,["그런 말 하지 마|상상하기 싫어","안 돼|{n} 없으면 나 공부도 안 돼"]],
+[/(보러\s?와|와\s?줘|와줘|데리러\s?와)/,["응 지금 갈게|기다려","갈게 ㅎㅎ|어디야?"]],
+[/(집\s?가고\s?싶|집\s?갈래|집에\s?갈)/,["데려다줄게","조금만 더 있다가 같이 가자"]],
+[/(공부\s?하기\s?싫|하기\s?싫어|놀고\s?싶)/,["조금만 더 하고 같이 놀자","나도 ㅎㅎ|딱 한 시간만 더 하자"]],
 [/(산책|걷자|걸을래|걷고\s?싶|바람\s?쐬|한강)/,["좋아 ㅎㅎ|공부 끝나고 바로 가자","산책 좋다|손 잡고 걷자","@where 가자|어디로 갈까?","그럼 이따 내가 데리러 갈게|따뜻하게 입고 와"]],
 [/(안아\s?줘|안아줘|허그|포옹)/,["이따 꽉 안아줄게","만나면 바로 안아줄게 ㅎㅎ"]],
 [/(뽀뽀|키스|쪽)/,["이따 ㅎㅎ","부끄럽게 왜 그래|이따 해줄게"]],
@@ -914,7 +923,7 @@ const IN=[
 [/^[ㅠㅜ.~!]+$/,[()=>yLight()]],
 [/(할래|갈래|먹을래|볼래|할까|갈까|먹을까|볼까|하자|가자|먹자|보자)\s*[?？!~ㅎㅋ]*$/,["좋아 ^_^","응 그러자 ㅎㅎ","{n랑}이면 다 좋아"]],
 [/^(응|ㅇㅇ+|ㅇ|웅|엉|어|ㅇㅋ|오키|알겠어|알았어|그래|넹|네)[~!.ㅎㅋ ]*$/,["ㅎㅎ","응응","웅"]],
-[/[?？]\s*$/,["음|글쎄 ㅎㅎ","나도 잘 모르겠어|{n는} 어떻게 생각해?","그건 비밀 ^_^"]]
+[/[?？]\s*$/,["응 ㅎㅎ","당연하지","응 맞아 ㅎㅎ","그건 이따 만나서 말해줄게"]]
 ];
 const DF=["오 진짜?|더 얘기해줘","{n} 얘기 듣는 거 좋아","진짜? ㅎㅎ","맞아 ㅎㅎ","오|{n} 대단하다","ㅎㅎ 웃기다","{n랑} 얘기하니까 공부가 안 돼 ㅎㅎ","음|그건 이따 만나서 자세히 얘기해줘","@food 근데 밥은 먹었어?","@doing 지금은 뭐 해?","@day 오늘 하루는 어땠어?","@tease 근데 {ny}|아니야 ㅎㅎ","@tease 있잖아|나중에 말해줄게","@tease {n} 오늘|아니다 ㅎㅎ","@tease 하나만 말해도 돼?|아니야 이따 말할래","@yn 이따 공부 끝나고 같이 산책할래?","@yn 시험 끝나면 한강 가자"],
 LONG=["{n} 고생했네|얘기해줘서 고마워","진짜?|그래서 어떻게 됐어?","그런 일이 있었어?|이따 더 얘기해줘","{n} 얘기 들으니까 보고 싶다","진짜?|{n} 대단하다"],
@@ -923,6 +932,7 @@ const TOP=[[/시험|중간고사|기말/,"아까 시험 얘기했잖아|잘 될 
 function rep(arr){if(!Array.isArray(arr))arr=[arr];S.rh=S.rh||[];
 const raw=arr.join(" ").trim(),t=raw.replace(/[ㅋㅎ]{2,}/g," ").replace(/\s+/g," ").trim()||raw;let tpl=null,act=null;
 const ack=arr.length==1&&/^(응|ㅇㅇ+|ㅇ|웅|엉|어|ㅇㅋ|오키|알겠어|알았어|그래|넹|네|ㄴㄴ)[~!.ㅎㅋ ]*$/.test(raw);S.cold=ack?(S.cold||0)+1:0;
+const cx=yCtx(t,raw);if(cx){S.ask=null;return ySplit(cx)}
 const STRONG=/(사랑|좋아해|좋아한다|좋아함|보고\s?싶|보구\s?싶|미안|서운|삐졌|섭섭|사귀|결혼|질투|헤어지|성의|대충|안다고|말해\s?줘|해\s?줘야지|하라구|하라고)/;if(STRONG.test(t)&&!/^(kfind|koffer|kq|otw)$/.test(S.ask||""))S.ask=null;
 const it0=IN.slice(0,IN.length-3).find(x=>x[0].test(t)||x[0].test(raw));if(it0&&/^(food|doing|day)$/.test(S.ask||""))S.ask=null;
 if(S.ask&&AK[S.ask]&&(S.ask=="tease"||!/[?？]\s*$/.test(raw))){const r=AK[S.ask](t,raw);if(r)tpl=r}S.ask=null;
@@ -932,7 +942,7 @@ if(!tpl&&S.mem&&Date.now()-S.mem.ts>60000&&Math.random()<.5){tpl=S.mem.f;S.mem=n
 S.ldf=0;if(!tpl){tpl=yDF(t.length>35?LONG:DF);S.ldf=1}
 const tp=TOP.find(x=>x[0].test(t));if(tp)S.mem={f:tp[1],ts:Date.now()};
 return ySplit(tpl,act)}
-function ySplit(tpl,act){S.rh=S.rh||[];S.rh.push(tpl);if(S.rh.length>24)S.rh.shift();let a=null;const m=tpl.match(/^@(\w+)\s+/);if(m){a=m[1];tpl=tpl.slice(m[0].length)}
+function ySplit(tpl,act){if(/@fight/.test(tpl))S.mood="fight";S.rh=S.rh||[];S.rh.push(tpl);if(S.rh.length>24)S.rh.shift();let a=null;const m=tpl.match(/^@(\w+)\s+/);if(m){a=m[1];tpl=tpl.slice(m[0].length)}
 const b=tpl.split("|").map(x=>{const q=x.match(/^@(\w+)\s+/);if(q){a=q[1];x=x.slice(q[0].length)}return nmF(x)}).filter(Boolean);S.ask=a;return{b:yEmo(b),act}}
 /* 이모티콘 절제: 답장 하나당 최대 1개, 대부분은 아예 없이. ^_^는 특히 드물게 */
 function yEmo(b){const E2=/\s*(ㅎㅎ+|\^_\^)\s*$/;let keep=null;const r=Math.random();
@@ -944,7 +954,7 @@ let YQ=[],YT=null,YB=0,YN=null,YNC=0;
 const yHere=k=>rk==k&&!!$("#ms");
 function yRead(k){let c=0;(S.chat[k]||[]).forEach(x=>{if(x.me&&!x.rd){x.rd=1;c=1}});if(c){save();if(yHere(k))paint(k)}}
 function ySay(k,o){const P=o.b;if(!P.length){YB=0;return}YB=1;let d=k=="kk"?600+Math.random()*900:350;if(k!="kk"&&yHere(k))paint(k,1);
-P.forEach((p,j)=>{if(p.startsWith("⏳")){p=p.slice(1).trim();d+=2600}d+=Math.min(2600,420+p.length*85+Math.random()*380);setTimeout(()=>{S.chat[k].push({t:p,h:hm()});const h=yHere(k);
+P.forEach((p,j)=>{if(p.startsWith("⏳")){p=p.slice(1).trim();d+=2600}d+=Math.min(2600,420+p.length*85+Math.random()*380);setTimeout(()=>{S.chat[k].push({t:p,h:hm()});S.ly=p;S.lys=(S.lys||[]).concat(p).slice(-4);const h=yHere(k);
 if(!h){if(k=="sk")S.sku=1;if(k=="kk")S.ku=(S.ku||0)+1;else if(k=="sms")S.su=(S.su||0)+1;else if(k=="ig")S.iu=(S.iu||0)+1;try{hb()}catch(e){}}
 save();if(h)paint(k,k!="kk"&&j<P.length-1);
 if(j==P.length-1){YB=0;if(k=="ig"&&S.dm>=2&&!S.skq){S.skq=1;save();setTimeout(skStart,15000)}if(k=="sk"&&h)paint(k);if(k=="kk"&&S.scn=="kan"){clearTimeout(KNT);if(o.end)kkLockUI();KNT=setTimeout(kanEnd,o.end?3500:25000)}if(((k=="kk"&&!S.sc)||(k=="ig"&&S.dm))&&h)paint(k);if(o.act=="call")setTimeout(()=>{if(!$("#inb")&&!$("#inc")&&!$(".call")&&!$(".ftm"))inCall(1)},2400);
@@ -1103,6 +1113,22 @@ lk:["나도 좋아해 ^_^","나도|내가 더 좋아해","ㅎㅎ 알고 있어|�
 ms:["나도 보고 싶어","나도|이따 바로 보러 갈게","자꾸 그러니까 진짜 보고 싶잖아",YJP?"아이타이|일본어로 보고 싶다는 뜻이야":"나도 많이 보고 싶어","지금 갈까?|진짜 갈 수 있어 ㅎㅎ"]};
 const GRX={lv:["나도 사랑해 {ny}","나는 {n가} 제일 좋아","몇 번째야 ㅎㅎ|나도 사랑해","부끄러운데|사랑해","알면서 ㅎㅎ|사랑해"],lk:["나도 좋아해","내가 더 좋아해 ㅎㅎ","{n}만 좋아해"],ms:["나도 보고 싶어","이따 보면 안 놔줄 거야 ㅎㅎ","나도|많이 보고 싶어"]};
 function yGrad(k){S.gr=S.gr||{};const n=S.gr[k]=(S.gr[k]||0)+1;const L=GR[k];return n<=L.length?L[n-1]:pk(GRX[k])}
+
+/* ===== v46: 직전 유우시 말 + 분위기(서운함) 고려 ===== */
+const MPOS=/(^응|^웅|^ㅇㅇ|^그래|풀렸|용서|봐줄게|알았어|알겠어|ㅎㅎ|ㅋㅋ|좋아|고마워|사랑해|괜찮아)/;
+const APP=["미안해 진짜|{n} 화 풀릴 때까지 옆에 있을게","달래줄게|이리 와 ㅎㅎ 안아줄게","내가 다 잘못했어|{n} 하고 싶은 거 다 하자","미안|{n} 서운하게 안 할게 진짜","화 풀어 {ny}|나 {n} 없으면 안 돼"];
+function yApp(){S.mood="fight";S.apc=(S.apc||0)+1;return APP[(S.apc-1)%APP.length]}
+function yCtx(t,raw){const ly=S.ly||"",s=raw.replace(/[!~.…ㅠㅜ]+/g,"").trim();
+if(S.mood=="fight"){if(MPOS.test(raw)&&!/(안|아니)/.test(raw)){S.mood=null;S.apc=0;return pk(["다행이다 ㅎㅎ|다음엔 서운하게 안 할게","고마워|사랑해 {ny}"])}
+if(/(사랑|좋아|보고\s?싶)/.test(raw))return null;return yApp()}
+if(/^(진짜|정말|레알|진심|ㄹㅇ|리얼|헐|대박|오+|우와|와+|헉)\s*[?？]*$/.test(s)){
+ if(/(갈게|올게|사줄게|해줄게|줄게|가자|하자|볼까)/.test(ly))return pk(["응 진짜 ㅎㅎ|약속","진짜지|기다려"]);
+ if(/(좋아|사랑|보고\s?싶|생각|귀여|예뻐)/.test(ly))return pk(["응 진짜야|부끄러우니까 두 번은 안 말할래 ㅎㅎ","진짜지 ㅎㅎ"]);
+ return pk(["응 진짜 ㅎㅎ","진짜야"])}
+if(/(그런\s?거|그랬|그래서|그거였)\S*\s*[?？]*$/.test(s)&&/(좋아|사랑|보고\s?싶|생각|목소리)/.test(ly))return pk(["응 ㅎㅎ|들켰다","응|말하니까 부끄럽다"]);
+if(/^(엥|응|뭐|뭐야|머야|어)\s*[?？]+$|^(엥|뭐야|머야)$/.test(s)&&S.ask!="tease")return pk(["왜 ㅎㅎ","아니야 ㅎㅎ"]);
+const wm=raw.match(/왜\s?(\S{1,6}?)(이야|야|냐|해)/),ys=(S.lys||[ly]).join(" ");if(/(ㅡㅡ|-_-|뭐래|장난해)/.test(raw)||(wm&&ys.includes(wm[1])&&/(글쎄|모르겠|아니야|말\s?안|나중에|아니다|비밀|맞아)/.test(ys)))return pk(["장난이야 ㅎㅎ|{n} 반응 보고 싶어서","미안 ㅎㅎ|진짜는 좋아한다는 거야"]);
+return null}
 
 const PF="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5Ojf/2wBDAQoKCg0MDRoPDxo3JR8lNzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzf/wAARCACwALADASIAAhEBAxEB/8QAHAAAAQUBAQEAAAAAAAAAAAAABgECAwQFBwAI/8QAPRAAAgEDAgQDBQYEBgEFAAAAAQIDAAQRBSESMUFRBhNhFCIycYFCkaGxwdEHI1LhFSQzYnLwQyY0U4Lx/8QAGQEAAwEBAQAAAAAAAAAAAAAAAAEDAgQF/8QAIhEAAwEAAwEAAgIDAAAAAAAAAAECEQMhMRIEYTJBExQi/9oADAMBAAIRAxEAPwDnkFxI8zMxJYnPEcEfXNGOi3Fg0Xl6haB8DZlyR8+4+hoKigdhjHEBuR1HrRNoLNCAlzFOiY+JW419D3FczR1psJILy1XK203GBuFdg2R+hqpfXdvO+HiHEdjsFYevrWXq1kwzPC6gZ/1Y91J/3AfCfX8Kyf8AEZIwYr+PjHRgd/n6/nUnJT6NeSBFJ9mmAbHwv9qsy7OMpcRkZ6fEv9qikZ3QNBOJY+xOPp6GmNczrGeIFl6q4yR8jQkDZUdriAkwScSj7Oc7fWtnwz4p/wAPxBcj/LE7gH/TPoO3pWHcGKRQyM0bdN9qz52dHy2G7HGaolpJs7fbzxXMKyQOro3JgatT+/DFL9oDy2+Y5H7vyrl/gbWzb3Rs5Hwkh93fOD2NdRss3IkiQZDpxZ6Kw3GfxH1pNYIr53xUwRIxmQB3/oPIf8u/y+/tTAwT/T+I/b5H6dh+NMzyoAc7M7EsST3NID3pDSUhi5pc5ptITtQArGm148qTOKAFBAG9NJpM5pD3oA8Ttmm16kbYUwZyCW6liaGSM++CNwenbFdC8OG11SzSWErHMo9+FmwT3I9PlXPI0XjWQ+8rDJHZuVFeg6NcXA86zyAu5y3X0p34ajdCq5MEYaN4/LPISDYg9jjmP++tCes2ETFioXB5FdlJ/Q1r35uoYeG5BIH2+q+h9KxJ7gqDg5B+JD+YqKbLNAyxns5mMLMP6lO1Pjv+McQLBh8S1o3SRy5PPG/qtZ0tsG3QDI9MVVNP0i00PaeCcYJUse4IqpNBgHyWPF/STzpTA+fg97t1P6VHLI0K5xg+o/atr9GGRW8/kzofKKSqchhkEEV2Xw7rJ1XTIJkxG8RGY12CuOvzPPNcj0+aCWdQ4XiO2TXUPCUaw6ThJBIPMI4gNx6H8azb7NTOy2El0AJeJBhHHGvyPT6HI+lQ09W8y0I+1C2f/q37H86izWTI417O3rTc0hPagBc716vCkPpQAp5U1jilO9NO9Azy9q82+1NJwRUkaNKcKBsMsxOAo7k0ARhWZgsalmbYAczUhKwfAwabrIOS/wDH19fu715nRFaOEnDbM5GC/p6D0++oHNNCOby6PJbX0kWeOJH91u46Ue+HCLeFFb4ccqFYLgLbxTuQ0JAV2/oPQ/LvRDZvwxgg1LkbZ18aSNfUhHOThVKkYxjnQRrOmm0k4xkWzHZ+ZiPY+lFsUvH61a9iS4jZJQGVhgg9RUU/kq5+kc9Wwa4YqjGK4QcuYYd6zbu0miLLLGUI6jl/ai3VLEaS2Fc4TeJ89P6T6isa5vfbgEwB3x19atLIVK8B08fIsSPWlMbSKFKgjvjcVrvaRRqctwBuYPI/StTQfDg1CZPebgz8SnaqfaXZP/G2A93Zm2kWRlbfqOVdA8CtPHcyLKkns06qqkg4Lc8g+goxuPCGmvpzWrRHBHxHcqe4NY3hIXOgTTaXeK0tvGxeNiMqoPb051K+ZXPXqOjh4viv0zbtZAkwEnwMCj/I7f3+lIwKMyMMMpwfnULsrO5T4GJI+VWJ2LrFN1deF/8AkNvxGDVUcbWPBnSvDY703ipCw+tAiXNJkE0wNS5++gB1NOxr2acFXhDykhDyA5v8uw9aAEROMFi3BGNmcjP0A6n0r0kvEojjXgiByFzkk9yep/6KbLIXxnAVdlVeSj0qPOKAPE71HmlO5prGmgOaaffPaOYZgGifYg8jRHp16LJRHMSbJmxFMf8AxH+hvTsfvoatPLuUEUuCp+Fq2YLTUdMh8wqLvTnGGBXiKj1HPH31ikmXltBbaDD4zWi10sER74oJsNS9h4WtwXtG+GMtxcA/2sPyOK1JdTgu48RSKTyxneouHp0TawxvEepyXtwYUzw1jzzjT7UuF8yToP1rUntuGZmxuaiit3kvIiI43jIKSLIMjFWnCFJvWZuiRnVZOOYM8iOC2W2Knl8q6z4Zt0hjUKAFHIChG0sFt4zHaQpChOW4RjJop0mRoYQoqfLW+G+KfldhFczALgVkX9kl7biWP413BU/EO1OaclgGO9X4HHANgPkK5/49nQ+1gOK3SrNs3mJLCRvjjT5jn94z91N1WL2e6yg9yTceh61XilaGVJF+JSGFdsv6Wnm0vl4yXNKKWcKkrBPgPvIf9p3FRl8/StCHhhyp2cbmolJLBVBLHYAczU4xAeYeYdeYT9z+AoAXhEe8y5Y7iM/m37Ux2Z2LOck00k8yck9aaWpAeJ70hOd6YWpCe9ACk701jSMfuptAHI9PuvZ5QkhPAT7p/pNdH0bXreLS3jc4fhyCOtc11HT7mxlMd1C8bY5MOY9D1q9ox89gom4JQPgPJ/l61q5TWm4tp4al3c+13bSwRCIk+8ybBvnVyyw8ii4Ct/uxvUSS+03Eem24iilcEtOenYDPIn8KraNpmqwXxN+LiNFO5kIPFvyHT61jOtN7/wBYdJsdBiurNXTDAjsKqNoq20rYWtjwvOYYxGx27Vu3VqjnjxkNvXK6aOpJAdFCA2GFattHGqjlWlNoSTKG4uHPas+3s8Xj25k4uAAgjt/0UmCwWRUU5AFWI5FCU6a0jhHGzjl1rHl1CNXZVIOO1ZzR7hH4lvRb2qSlQ2JAuCcc6HW1mUj+XAo9S2a2dR1YWFut1LEkluXEcqyLxKUbY8Q7cqxNf0+PT3t7u0B/w+7JERJz5Tjcxk9dtweo+Vdv4+fOM4vyE/rURSa/ckIjuq8A4QAu4Gc/rUJ12fceZn1AFVJUV199cj8R9az5oWhPECSnft866VKOXWbaa9dRktHcMCRg/KtXRtbS8kNvKAkwHu45MKCHkwdthSpcvBKk8JxJGwZTQ4TQ1TR08nnUZaoLO6S8s4rmP4ZFzjt3FS5zXOVPE8qRjSE0mc0AIzVMAIRxSAGTohHw+rft9/ak/wDbnLYMw6dI/wB2/L58q5Ykkk70AWr+wtdRg8m9hSWPOQG6HuD0NCGpeBUV2l0u5MfUJLvg+ho3O4qMnpmnrAEvD+kym89n1OFkux/pS/ZkHoR1ovk0kuyuxLMBjJOaibc4NXYNTx7lxnI+2OvzqXJNeovxciXTHWts0JBHSt2wufNiKPzWsuG8t54w8MiOp5MpyKkiVJGKlmAPVWIP31zP9nV0UvF+uNZ2bxWkoE5G3p61Q8DPK8LySSGWWQ7s3PHatK78PWc0rScGWbmWOfzoU1XVk02OWx0aV/PdvedBuAOi/vW5SaxCxtmz471pbSD2K0cSX0mwjTfh+dU9I0OaONWunzK4BKg8qENMWa1u2vLsFpWOwJyR9e9HHhm4uLySSWXPloNjWqn4nEKkt7LOraZFPYS2LDaSJh9eh++h7wEv+LWmp+C9Tk4ZJYzJZSN9h03BHy/ImiL2xbm5m4TkIOEfrQzYN7B430vUV2VbkK59Gyp/OtcLc+kuWfpMwV8+1uZtP1GMxXcDlJEPQipwMBhzB50d/wAZvCzyoPEmnr/MhQJdqOZT7L/TkfTHauW22quo4ZkDeucV3rtHni6jCkT+58LDIHas9mK5HQ86u3V1DOVJbgxnbGSarOI3H8ri+bGmIKfA18ZLS4s5Gy0LB1+Tf3/OiYHfeueeG7v2HVoi/wAEmY2PYH++K6FGrO4RBlj0qFrGVl9EgBYhVBJOwA5mn8Qt9kYGXkXB2X0Hr6/d3pC6xKVjOWIw0g6+g9Pzquzb1g0eY9BTTSE0maYGsd+VNwMEmnAZFV7y4W2haRzkjkO5pAUdW1WLTk94F5TyUfmewoS1TVprgnzZW8o9YzgL8wOlWtQuGmkZm9523wKwLyCQksGCk9t6vMpEm9L0Goz6dMJbWcxk8wDkN8xyNEum+O4gAL6B0bq8W6n6cx+NAdrKW4o7jeReRP2hUxCMNiBRXHN+o1HJUeM6XP4ptruBo7PUooy4wS2zDPzqlZaRBGjPZMXdxhnLZz9a58yZ5EU1Wmgy9tcSwv3icr+VS/18/iy8/lUnrOlW/h1mfzLpwVHJRU11feyQmysh/MfYBenqa5vb+J9dgYJLey3ER2KyHf6Eb0deEXttaBS1uEF6dzbzkK7f8Tyb8KlXDa7fZRc80WbKBrdB72T1Peq95bkszqNweIfMbityewuoG4JoHjbs4xn5d6o3UchxFGhaV8KqjmTUt7Lylh1WF4tR0m3eVFkhuYAHQ8mVl3H4181+LtEk8OeIrzTHyY424oXP24zup+7Y+oNfR3h+1ks9Bs7Odg0sEfAxHLIoN/i94ZOs6KuqWicV7YKSwA3eLmR8xz++u2Kw8yl2zhRUMexqeJMVCpzUyNt8qqYGuSXA5Heul6ZeLc6ZBJHt5iDzCebMOY+WRyrmbjL8XcYoq8IXoKzWbHcEyJ8uo/I1jkWo1L7Chm2zURbevcWaaTUSgppUXjJwQFG7MeQFNRS+STwqvxMen9/SkklDAIo4UHIdz3PrQM1by4S2TLHc8lHM0N3k73b5ZthyHQfL96dNcrNIXmdgD1KkZpuY32RgR6HNVmcJt6Z0kONhy7d6ozIuSN8joRWzKnPcHPKqs1qGGSa0ZBy/tsjiQcLA7EVRWYcpE95eY/WiaS3zsTtjnWTe6fluOM4kHWtIRVW4h2xhfmKcWVjniz6CoJEjjwLghCfx+XepIkB3hhnbPXhwPxoAnEQYAEfKmrxQSBkYqynKspwR6ipUII9w7jao5AR8VAHSvCn8Q55rCTStZlhll90W08+PeOfhb19aM/DMVreag9yInEsUfEqMuUQ8ieL8gd+dfPFzH50TRgjLcs96mubjxDYab7Lc3t37A/uMkdyxTHZgDj76nXFLelJ5KlNI7JL/ABR/9ZTaJpFvbXNggKi5Ytl3UZbBBwRzGfSiW38URXMbCW38mXYgA8SP3HptmvnbQLiO11SynJ4FjkGccgp2P4E12BImiAMiMoPIkEZrNrPAns514+0IaBr8i24/yNz/ADrY9lJ3X6Hb5YrAR66V43hTU9HELu3mwEvCSucHtnsa5fG3fY1SK1GaWMs8Xp61Pp921ndxTrzRskdx1FVhvikYEMenUVoR0qOVZEV0OUYAg+hqRQCCzHhQc2/QetYfhW5FzpoWRsG3bgbvjmMf96VrSSFyNsKPhUdK52sZRMdLLxYVRwoOS/r6moeLekLUwnekMtMmccQHOqr2aPvjhbHNRiqT3lyhPCAw7HnSrqcyMfMiI9MZq5Ie/nRe4440/rA3H0qRVVkGMYPIg5zUlpfwXBKuMEjrSyQmJw0ZyhOSo6eooAqPbji4CuzcvQ1nXcLxltskcq3nZAnGNwPeyDQPqniB5LlhGMKDimgJ5XQvhl5bingswPCcgKT+FZ0d+kxHmYB70l1clEAR/lTES26P2NSXGQvLFRWV/HMpA92Qc1/aknkaTnQBXJ3NF1lF7ZpcMzqrRupSTIyCRtg0IcO9GvgENc2V/bkB1hKysnXhOxP0IH31m/DU+gVqdpJpN+8IAKMOOI88Kf2o+8A/xEvLNYtM1SRZbbZImmGeDspPbselZHjqwmFtHKgDrASVbh34TzBNBkbgjI5GjqkHjPoi+n0LUIW8+2NtIRu0W65/41xfxZp0Wn6m8lrOk9vKxwyDGD1BHQ0W+Adft9UiTRtSRTdqCIJixBlXHwnuw/EfKrHjPT4JNNMHuKV5YGApFYnZeM08aObRvn61I7bZ7VVHEjFW2IODUynK1UmbPhO4K6nLF9mSIn6gj9zRcTQBZzG2uI7mPmhB+nUUbpKJEV0OVYAg+lS5F3pufCUmmsabnqaaTvUzRNHFt/Mwx71DcSxxD3wCM88Utr5BGF4vXLc6ueRGWGFbbkc5xVyZlebEWwsDlf6sYq6jMsR4G4kCknPMUlwbqIEwOrYHwyID+IxWNqerTiIxXVuYkbmYuTfOmBM96JQ8Wyhxt8+1CGoWgRm4RvnetL2u3YHypDnHemSTJOMsBnkRjrTQgZbiViNxivGViNzWpqFhxAyQAnqRWQaYhQ7KwZSQw5EVp2l6JsJLs/fvWVSZwcimGhDw9a3vA182n+JLZkbhEoaI55HI2B+oFClje8QEcp94cietaVrN7NdQzj/xyK+M88HNZa6NJnWNXs4JVJjTNvMDhTvwHqtcf17S20fUTHzt5fejbt6V2cyRKwXjDWlyoaOT0PI/McjQx4l0hNQtpbeVeF0YgN1VuhqMPGUpajmsM0lvNHNA7RyxsHR1O6sNwa7DpnsXirQI9QRP5qEx3MIY+5JjfbseY/tXG5IZbaZ7a4UrLGcEHr60Q+CPEj+GtYE7BpLKceXdxD7Sf1D/AHLzH1HWqUtMJ4J4o0c6fcmSNSIyfurHjbHrXXfFdja32nPc27rLBKgeJ15MD1FckuYWtp2jYbA7US9BobE3vFTyNE/hu8823a3c+9EcjPb/APfzoWKnAcVd026NrdxzHkdmHp1p0tQk8Yak0+GJpjgbKCOJjyFMhjMzgKQB/UTgCrjkJwQ+7wRtnbfPc7df2rnKE2pWdpBwvax+Wc8IGfj9cdPpURLr7qguc7ljhQat615RuYXt2ZVKnMbblGz36jHKoEEYY9Qoxk1afDL9GSGZUyI0kOPs52rOltWuM+0wose3InNa7SFF4mbCnlmoDMZFyAFA5UzIM3fh6xLs0fm46e8BQ9dwT2MuSrtFnrzx+tHlyC++ck86x71UZCsgByNx0p6IwYroSBSo2xsaiuLKC6HER5cn9S/r3qC7haym9wnyXOx7GnRzcjmtAULjTbiHJC+YvdP2qmRg4NESXGOu9LIkU4/mxq/rjf76NFgN1p2N5xgRSn3uhPWp5NLtmzwO6duoqhLp9xFllXjA6p0+lAeHUfDGoC40xLG4YYx/JYn4WGxH1rfYe0W6uSPOXEchHXHwn9K5l4YvDPaywSbvGQ2fnt+lFGjXzw3HlyMfKf3WH61Gp7Kp9Gf4w01r2Hz44/8ANwcioxxr2P6UFIwYZFdfvIA7mQLk8ODjvQZ4g8LzvJJe6dHxEjilhUbnuVH5inNf0xNDvBmveSDpN9IfZZSfJYnaNz0+R/P50SXXgibV7SV4fclVS0eRzIHI/OuYA4Fdb/hX45hnEeg69IFc4S0uW+2P/jc9+x68j0p0s7Qk/wCmcviUqpVhghiCKjmPAVPrRP4w0U6Rf4A+MuSB2DkA0PNErghvhPUVpPUJoMvD14JNHQuSVBKkDYnHI9idxWjHyWQ77AADbjycfvVXTIIotORbVf8ALhfcYr8Rzz57Gpy3lMWSIHhT3ipznbY/2+dRfpReH//Z",hm=()=>{const d=new Date();return d.getHours()+":"+String(d.getMinutes()).padStart(2,"0")};
 let rk;
