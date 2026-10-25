@@ -682,7 +682,7 @@ button,input,textarea{font:inherit}
 (()=>{const RD=Date,off=new RD(2026,9,24,12,0,0).getTime()-RD.now();function VD(...a){return a.length?new RD(...a):new RD(RD.now()+off)}VD.prototype=RD.prototype;VD.now=()=>RD.now()+off;VD.UTC=RD.UTC;VD.parse=RD.parse;window.Date=VD})();
 const $=s=>document.querySelector(s),E=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])),PH=$("#ph"),A=$("#app"),D0=new Date(),WD="일월화수목금토",dk=d=>`${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
 let S={chat:{sms:[],kk:[]},notes:[],ev:{},likes:{},cmt:{},tw:[],start:""},cur=null,locked=1;
-try{if(/[?&]reset/.test(location.search))localStorage.removeItem("yu");Object.assign(S,JSON.parse(localStorage.getItem("yu")||"{}"))}catch(e){}
+try{localStorage.removeItem("yu");Object.assign(S,JSON.parse(localStorage.getItem("yu")||"{}"))}catch(e){}
 const save=()=>{try{localStorage.setItem("yu",JSON.stringify(S))}catch(e){}};
 if(S.v!=8){S.chat={sms:[],kk:[]};S.ku=0;S.su=0;S.iu=null;S.v=8;save()}
 const SMS0=[{"t":"카톡 안 봐?"},{"t":"저녁에 시간 돼?"},{"t":"보고 싶어서 ㅎㅎ"}],IG0=[{"t":"스토리 봤어"},{"t":"친구랑 밥 먹었어?"},{"t":"맛있어 보이더라"},{"t":"다음에 나도 데려가"}];if(!S.chat.sms.length)S.chat.sms=SMS0.map(x=>({...x}));
